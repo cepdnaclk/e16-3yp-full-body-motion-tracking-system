@@ -9,6 +9,9 @@
  
  #### This is a game console based on full body motion tracking system.
  
+ ![Capture](https://user-images.githubusercontent.com/67902627/96344246-c2e85e00-10b7-11eb-88a1-70949e9012bc.PNG)
+
+ 
 
 ## Links:
 - [Department of Computer Engineering Website](http://www.ce.pdn.ac.lk/) 
