@@ -6,3 +6,8 @@
  ### - Wijekoon W.M.T.S , E/16/396 , e16396@eng.pdn.ac.lk
  
 
+##### Links:
+- [Department of Computer Engineering Website](http://www.ce.pdn.ac.lk/) 
+- [Faculty of Engineering Website](https://eng.pdn.ac.lk/) 
+- [University of Peradeniya Website](https://www.pdn.ac.lk/)
+
