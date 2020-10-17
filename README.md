@@ -7,6 +7,8 @@
  
  ## Introduction :
  
+ #### A game console based on full body motion tracking system.
+ 
 
 ## Links:
 - [Department of Computer Engineering Website](http://www.ce.pdn.ac.lk/) 
