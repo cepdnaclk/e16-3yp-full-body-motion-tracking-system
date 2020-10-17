@@ -7,7 +7,7 @@
  
  ## Introduction :
  
- #### A game console based on full body motion tracking system.
+ #### This is a game console based on full body motion tracking system.
  
 
 ## Links:
