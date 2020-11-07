@@ -1,5 +1,6 @@
 html ,body{
     background :#e13763;
+    overflow-x:hidden
 }
 .navbar
 {
