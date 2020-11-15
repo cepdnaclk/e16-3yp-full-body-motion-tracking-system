@@ -1,0 +1,11 @@
+[gd_scene format=2]
+
+[node name="map" type="Spatial"]
+
+[node name="room" type="CSGBox" parent="."]
+invert_faces = true
+width = 10.0
+depth = 10.0
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.896231, 0.443588, 0, -0.443588, 0.896231, 0, 3.21854, 7.44631 )
