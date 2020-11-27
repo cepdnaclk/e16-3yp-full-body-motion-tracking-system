@@ -15,15 +15,14 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Client_v0"
-run/main_scene="res://Scenes/MainScenes/SceneHandler.tscn"
+config/name="Gateway_Server_v0"
+run/main_scene="res://Scenes/Main/GatewayServer.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-Server="*res://Singletons/Server.gd"
-GameData="*res://Singletons/GameData.gd"
-Gateway="*res://Singletons/Gateway.gd"
+Authenticate="*res://Scenes/Singletons/Authenticate.gd"
+Gateway="*res://Scenes/Singletons/Gateway.gd"
 
 [rendering]
 
