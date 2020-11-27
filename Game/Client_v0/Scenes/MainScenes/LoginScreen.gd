@@ -18,10 +18,8 @@ func _on_LoginButton_pressed():
 		var username = username_input.get_text()
 		var password = userpassword_input.get_text()
 		print("attempting to login")
-		Server.ConnectToServer()
-		
-		
-		#Client_Gateway.ConnectToServer(username ,password)
+		#Server.ConnectToServer()
+		Gateway.ConnectToServer(username ,password)
 
 
 

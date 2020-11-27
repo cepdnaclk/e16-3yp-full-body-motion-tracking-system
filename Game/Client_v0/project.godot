@@ -23,6 +23,7 @@ config/icon="res://icon.png"
 
 Server="*res://Singletons/Server.gd"
 GameData="*res://Singletons/GameData.gd"
+Gateway="*res://Singletons/Gateway.gd"
 
 [rendering]
 
