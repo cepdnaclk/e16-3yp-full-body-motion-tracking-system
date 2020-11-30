@@ -57,19 +57,20 @@ func RequestLogin():
 	username = ""
 	password = ""
 
-remote func ReturnLoginRequest(results):
+remote func ReturnLoginRequest(results,token):
 	print("result received")
 	#login success
 	if results == true:
 		#connect to game server
+		Server.token = token
 		Server.ConnectToServer()
 		#remove login screen
-		get_node("../SceneHandler/Map/GUI/LoginScreen").queue_free()
+		#get_node("../SceneHandler/Map/GUI/LoginScreen").queue_free()
 	else:
 		#login failed
 		print("Please provide correct username and password")
 		get_node("../SceneHandler/Map/GUI/LoginScreen").login_button.disabled = false
 		#disconnect signals for gateway
-		network.disconnect("connection_failed" ,self ,"_OnConnectionFailed")
-		network.disconnect("connection_succeeded" ,self ,"_OnConnectionSucceeded")
+	network.disconnect("connection_failed" ,self ,"_OnConnectionFailed")
+	network.disconnect("connection_succeeded" ,self ,"_OnConnectionSucceeded")
 	

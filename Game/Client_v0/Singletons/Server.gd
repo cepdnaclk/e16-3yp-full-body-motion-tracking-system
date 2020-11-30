@@ -7,6 +7,8 @@ var ip = "127.0.0.1"
 var port = 1909
 var CONNECTED = false
 
+var token
+
 func _ready():
 	#ConnectToServer()
 	pass
@@ -26,7 +28,16 @@ func _OnConnectionFailed():
 func _OnConnectionSucceeded():
 	print("Succesfully connected")
 	CONNECTED = true
+remote func FetchToken():
+	rpc_id(1,"ReturnToken" ,token)
 
+remote func ReturnTokenVerificationResults(result):
+	if result == true :
+		get_node("../SceneHandler/Map/GUI/LoginScreen").queue_free()
+		print("Successful token verfication")
+	else:
+		print("Login failed , please try again")
+		get_node("../SceneHandler/Map/GUI/LoginScreen").login_button.disabled = false
 #-------------------------------------
 func FetchSkillDamage(skill_name ,requester):
 	#call the server
@@ -35,4 +46,10 @@ func FetchSkillDamage(skill_name ,requester):
 remote func ReturnSkillDamage(s_damage, requester):
 	#assign data to node
 	instance_from_id(requester).SetDamage(s_damage)
+	
+func FetchPlayerStats():
+	rpc_id(1,"FetchPlayerStats")
+
+remote func ReturnPlayerStats(stats):
+	get_node("/root/SceneHandler/Map/GUI/PlayerStats").LoadPlayerStats(stats)
 	
