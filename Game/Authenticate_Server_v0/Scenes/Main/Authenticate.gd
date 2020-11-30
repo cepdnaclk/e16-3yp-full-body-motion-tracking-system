@@ -25,6 +25,7 @@ func _Peer_Disconnected(gateway_id):
 	print("Gateway "+ str(gateway_id) + " is disconnected")
 
 remote func AuthenticatePlayer(username ,password ,player_id):
+	var token
 	print("authentication request received")
 	#get player id
 	var gateway_id = get_tree().get_rpc_sender_id()
@@ -40,6 +41,11 @@ remote func AuthenticatePlayer(username ,password ,player_id):
 	else:
 		print("Succesful authentication")
 		result = true
+
+		randomize()
+		token = str(randi()).sha256_text() + str(OS.get_unix_time())
+		var gameServer = "GameServer1"
+		GameServers.DistributeLoginToken(token, gameServer)
 	#send result
 	print("authentication result send to gateway server")
-	rpc_id(gateway_id ,"AuthenticateResults" ,result ,player_id)
+	rpc_id(gateway_id ,"AuthenticateResults" ,result ,player_id ,token)

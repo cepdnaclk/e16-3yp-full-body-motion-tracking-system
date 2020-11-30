@@ -25,6 +25,14 @@ Server="*res://Singletons/Server.gd"
 GameData="*res://Singletons/GameData.gd"
 Gateway="*res://Singletons/Gateway.gd"
 
+[input]
+
+ui_stats={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":96,"unicode":0,"echo":false,"script":null)
+ ]
+}
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
