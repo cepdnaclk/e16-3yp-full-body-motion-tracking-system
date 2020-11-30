@@ -22,6 +22,7 @@ config/icon="res://icon.png"
 [autoload]
 
 ServerData="*res://Scenes/Singletons/ServerData.gd"
+HubConnection="*res://Scenes/Singletons/HubConnection.gd"
 
 [rendering]
 
