@@ -14,7 +14,7 @@
 - ./Godot_v3.2.3-stable_linux_headless.64 --main-pack GatewayServer.pck --ip:ip_of_authenticate_server --port1:port_for_authenticate_server_connection --port2:port_for_client_connection
 - By default ip:127.0.0.1 port1:1911 port2:1910
 
-## **For Game server ** :
+## **For Game server** :
 - ./Godot_v3.2.3-stable_linux_headless.64 --main-pack Server.pck --ip:ip_of_authenticate_server --port1:port_for_authenticate_server_connection --port2:port_for_client_connection
 - By default ip:127.0.0.1 port1:1912 port2:1909
 
