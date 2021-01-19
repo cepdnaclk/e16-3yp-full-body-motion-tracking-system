@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Resources/Textures/floor.tres" type="Material" id=2]
+
+[node name="Room" type="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.76762, 0 )
+
+[node name="CSGCombiner" type="CSGCombiner" parent="."]
+use_collision = true
+
+[node name="container1" type="CSGBox" parent="CSGCombiner"]
+invert_faces = true
+width = 10.0
+height = 3.0
+depth = 10.0
+material = ExtResource( 2 )
+
+[node name="container2" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11.3476 )
+invert_faces = true
+width = 10.0
+height = 3.0
+depth = 10.0
+material = ExtResource( 2 )
+
+[node name="crosscontainer" type="CSGBox" parent="CSGCombiner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.515801, 5.84494 )
+invert_faces = true
+material = ExtResource( 2 )
+
+[node name="SeconCamera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.973006, 0.23078, 0, -0.23078, 0.973006, 0, 2.51426, 17.0161 )

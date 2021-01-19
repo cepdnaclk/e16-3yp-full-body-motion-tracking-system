@@ -6,11 +6,20 @@ var network = NetworkedMultiplayerENet.new()
 var gateway_api = MultiplayerAPI.new()
 var ip = "127.0.0.1"
 var port = 1912
+var client_port = 1909
 
 onready var gameserver = get_node("/root/Server")
 
 
 func _ready():
+	for argument in OS.get_cmdline_args():
+		var args = argument.split(":")
+		if "--ip" in args:
+			ip = args[1]
+		if "--port1" in args:
+			port = int(args[1])
+		if "--port2" in args:
+			client_port = int(args[1])
 	ConnectToServer()
 
 func _process(delta):
