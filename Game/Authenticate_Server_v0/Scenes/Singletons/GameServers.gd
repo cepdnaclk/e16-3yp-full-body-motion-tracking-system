@@ -4,11 +4,21 @@ extends Node
 #setup connection
 var network = NetworkedMultiplayerENet.new()
 var gateway_api = MultiplayerAPI.new()
+
 var port = 1912
+var auth_port = 1911
 var max_players = 100
 
 var gameserverlist = {}
 func _ready():
+	for argument in OS.get_cmdline_args():
+		var args = argument.split(":")
+		if "--port1" in args:
+			port = int(args[1])
+			
+		if "--port2" in args:
+			auth_port = int(args[1])
+			
 	StartServer()
 
 func _process(delta):
@@ -22,7 +32,7 @@ func StartServer():
 	set_custom_multiplayer(gateway_api)
 	custom_multiplayer.set_root_node(self)
 	custom_multiplayer.set_network_peer(network)
-	print("Gameserver Hub started")
+	print("Gamehub Server start on port ",port)
 
 	network.connect("peer_connected" ,self ,"_Peer_Connected")
 	network.connect("peer_disconnected" ,self ,"_Peer_Disconnected")

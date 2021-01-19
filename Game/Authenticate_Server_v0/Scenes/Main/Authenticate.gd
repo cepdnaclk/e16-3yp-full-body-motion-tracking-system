@@ -3,7 +3,6 @@
 extends Node
 
 var network = NetworkedMultiplayerENet.new()
-var port = 1911
 var max_players = 5
 
 func _ready():
@@ -11,9 +10,9 @@ func _ready():
 	StartServer()
 
 func StartServer():
-	network.create_server(port, max_players)
+	network.create_server(GameServers.auth_port, max_players)
 	get_tree().set_network_peer(network)
-	print("Authenticate Server started")
+	print("Authentication Server start on port ",GameServers.auth_port)
 
 	network.connect("peer_connected" , self ,"_Peer_Connected")
 	network.connect("peer_disconnected" ,self ,"_Peer_Disconnected")
@@ -49,3 +48,18 @@ remote func AuthenticatePlayer(username ,password ,player_id):
 	#send result
 	print("authentication result send to gateway server")
 	rpc_id(gateway_id ,"AuthenticateResults" ,result ,player_id ,token)
+
+remote func CreateAccount(username ,password, player_id):
+	var gateway_id = get_tree().get_rpc_sender_id()
+	var result
+	var message
+	if PlayerData.PlayerIDs.has(username):
+		result = false
+		message = 2
+	else:
+		result = true
+		message = 3
+		PlayerData.PlayerIDs[username] = {"Password":password}
+		PlayerData.SavePlayerIDs()
+		
+	rpc_id(gateway_id ,"CreateAccountResults", result ,player_id ,message)

@@ -17,6 +17,7 @@ _global_script_class_icons={
 
 config/name="AuthenticateServer_v0"
 run/main_scene="res://Scenes/Main/Authenticate.tscn"
+config/use_custom_user_dir=true
 config/icon="res://icon.png"
 
 [autoload]

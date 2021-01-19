@@ -2,19 +2,20 @@
 extends Node
 
 var network = NetworkedMultiplayerENet.new()
-var port = 1909
 var max_players = 100
 
 onready var player_verification_process = get_node("PlayerVerification")
 onready var combat_function = get_node("Combat")
 #store expecting token from client
 var expected_tokens = []
+#collect all player states
+var player_state_collection ={}
 
 func _ready():
 	StartServer()
 
 func StartServer():
-	network.create_server(port, max_players)
+	network.create_server(HubConnection.client_port, max_players)
 	get_tree().set_network_peer(network)
 	print("Server started")
 
@@ -28,7 +29,12 @@ func _Peer_Connected(player_id):
 
 func _Peer_Disconnected(player_id):
 	print("User "+ str(player_id) + " is disconnected")
-	get_node(str(player_id)).queue_free()
+	if has_node(str(player_id)):
+		#remove player
+		get_node(str(player_id)).queue_free()
+		#remove player state
+		player_state_collection.erase(player_id)
+		rpc_id(0, "DespawnPlayer",player_id)
 
 #--------------server functions-------------
 
@@ -59,6 +65,8 @@ remote func ReturnToken(token):
 func ReturnTokenVerificationResults(player_id ,result):
 	#send verification result ot client
 	rpc_id(player_id ,"ReturnTokenVerificationResults" ,result)
+	if result==true:
+		rpc_id(0,"SpawnNewPlayer" ,player_id ,Transform())
 
 remote func FetchSkillDamage(skill_name, requester):
 	print("ask for damage data")
@@ -73,3 +81,33 @@ remote func FetchPlayerStats():
 	var player_id = get_tree().get_rpc_sender_id()
 	var player_stats = get_node(str(player_id)).player_stats	
 	rpc_id(player_id,"ReturnPlayerStats",player_stats)
+	
+remote func ReceivePlayerState(player_state):
+	var player_id = get_tree().get_rpc_sender_id()
+	if player_state_collection.has(player_id):
+		#check player id exists
+		if player_state_collection[player_id]["T"] < player_state["T"]:
+			#get only latest player state and save it
+			player_state_collection[player_id] = player_state 
+	else:
+		#add new player id state to collection
+		player_state_collection[player_id] = player_state
+		
+func SendWorldState(world_state):
+	#send world state to player
+	rpc_unreliable_id(0 ,"ReceiveWorldState" ,world_state)
+	
+remote func FetchServerTime(client_time):
+	#send server and client time to client
+	var player_id = get_tree().get_rpc_sender_id()
+	rpc_id(player_id ,"ReturnServerTime" ,OS.get_system_time_msecs() ,client_time)
+	
+remote func DetermineLatency(client_time):
+	#reply to client to calculate latency
+	var player_id = get_tree().get_rpc_sender_id()
+	rpc_id(player_id, "ReturnLatency" ,client_time)
+	
+	
+	
+	
+	
