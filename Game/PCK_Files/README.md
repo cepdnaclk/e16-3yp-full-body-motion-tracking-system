@@ -3,7 +3,7 @@
 
 -   Download and extract Godot_v3.2.3-stable_linux_headless.64 
 
-- *Optional*: creating .\_sc\_ file will make editor_data folder which hold application data in the current directoy
+- *Optional*: creating .\_sc\_ file will make editor_data folder which hold application data in the current directory
 
 ## **For Authentication server** :
 - ./Godot_v3.2.3-stable_linux_headless.64 --main-pack AuthServer.pck --port1:port_for_gameserver_connection --port2:port_for_gateway_connection
