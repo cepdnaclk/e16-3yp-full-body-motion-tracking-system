@@ -1,20 +1,30 @@
 #client side gateway
 
 extends Node
+
 #primary network 
 var network #= NetworkedMultiplayerENet.new()
 #secondary network api for gateway -> authorization
 var gateway_api #= MultiplayerAPI.new()
-var ip = "127.0.0.1"
-var port = 1910
+var ip 
+var port
 var cert = load("res://Resources/Certificate/x509_Certificate.crt")
+#connected to gateway
+var CONNECTED = false
 
 var username 
 var password
 var new_account = false
 
+var scene_handler
+
 func _ready():
 	pass
+	
+func _load_settings():
+	ip = Settings.get_section("gateway")["ip"]
+	port = Settings.get_section("gateway")["port"]
+	print("Gateway:setting reloaded")
 
 func _process(delta):
 	#check whether custom multiplayer api is set
@@ -27,6 +37,8 @@ func _process(delta):
 	custom_multiplayer.poll();
 
 func ConnectToServer(_username ,_password ,_new_account):
+	#set scene handler variable for later use
+	scene_handler = get_node("../SceneHandler")
 	network = NetworkedMultiplayerENet.new()
 	gateway_api = MultiplayerAPI.new()
 	#using dtls encryption
@@ -38,8 +50,12 @@ func ConnectToServer(_username ,_password ,_new_account):
 	username = _username
 	password = _password
 	new_account = _new_account
+	
+	ip = Settings.get_section("gateway")["ip"]
+	port = Settings.get_section("gateway")["port"]
+	
 	#create connetion to gateway
-	network.create_client(ip ,port)
+	network.create_client(ip ,int(port))
 	set_custom_multiplayer(gateway_api)
 	custom_multiplayer.set_root_node(self)
 	custom_multiplayer.set_network_peer(network)
@@ -49,15 +65,21 @@ func ConnectToServer(_username ,_password ,_new_account):
 
 func _OnConnectionFailed():
 	#on connection failed enable login button
-	print("Failed to connect to login server")
-	print("Pop-up server offline or something")
-	get_node("../SceneHandler/Map/GUI/LoginScreen").login_button.disabled = false
-	get_node("../SceneHandler/Map/GUI/LoginScreen").create_account_button.disabled = false
-	get_node("../SceneHandler/Map/GUI/LoginScreen").confirm_button.disabled = false
-	get_node("../SceneHandler/Map/GUI/LoginScreen").back_button.disabled = false
+	scene_handler.dismiss_info()
+	scene_handler.set_alert("Failed to connect to Login Server.\nPop-up Server offline.")
+	get_node("../SceneHandler/LoginScreen").enable_buttons()
+	CONNECTED = false
+	StateMachine._is_gateway_connected = false
+	
 
 func _OnConnectionSucceeded():
+
+	scene_handler.dismiss_info()
 	print("Succesfully connected to login server")
+	CONNECTED = true
+	#state_machine variable update
+	StateMachine._is_gateway_connected = true
+	
 	if new_account == true:
 		RequestCreateAccount()
 	else:
@@ -76,22 +98,24 @@ remote func ReturnLoginRequest(results,token):
 	#login success
 	if results == true:
 		#connect to game server
+		scene_handler.set_info("Login success.\nConnecting to server ...")
 		Server.token = token
 		Server.ConnectToServer()
 		#remove login screen
-		#get_node("../SceneHandler/Map/GUI/LoginScreen").queue_free()
-		get_node("../SceneHandler/Map/Room/Player").set_physics_process(true)
-		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		#scene_handler.dismiss_info()
+		#scene_handler._play_game()
+		
 		
 		
 	else:
 		#login failed
-		print("Please provide correct username and password")
-		get_node("../SceneHandler/Map/GUI/LoginScreen").login_button.disabled = false
-		get_node("../SceneHandler/Map/GUI/LoginScreen").create_account_button.disabled = false
+		scene_handler.set_alert("Please provide correct username and password")
+		get_node("../SceneHandler/LoginScreen").enable_buttons()
 		#disconnect signals for gateway
 	network.disconnect("connection_failed" ,self ,"_OnConnectionFailed")
 	network.disconnect("connection_succeeded" ,self ,"_OnConnectionSucceeded")
+	network.close_connection()
+	CONNECTED = false
 	
 
 func RequestCreateAccount():
@@ -102,22 +126,21 @@ func RequestCreateAccount():
 	
 remote func ReturnCreateAccountRequest(results , message):
 	print("result received")
-	
+	scene_handler.dismiss_info()
 	if results == true:
-		print("Account created please proceed with logging in")
-		get_node("../SceneHandler/Map/GUI/LoginScreen").confirm_button.disabled = true
-		get_node("../SceneHandler/Map/GUI/LoginScreen").back_button.disabled = true
-		get_node("../SceneHandler/Map/GUI/LoginScreen")._on_BackButton_pressed()
+		scene_handler.set_alert("Account created please proceed with logging in")
+		get_node("../SceneHandler/LoginScreen").enable_buttons()
+		get_node("../SceneHandler/LoginScreen")._on_BackButton_pressed()
 	else:
 		if message == 1:
-			print("Couldn't create account ,please try again")
+			scene_handler.set_alert("Couldn't create account ,please try again")
 		elif message == 2:
-			print("Username already exists, please use a different username")
-		get_node("../SceneHandler/Map/GUI/LoginScreen").confirm_button.disabled = false
-		get_node("../SceneHandler/Map/GUI/LoginScreen").back_button.disabled = false
+			scene_handler.set_alert("Username already exists, please use a different username")
+		get_node("../SceneHandler/LoginScreen").enable_buttons()
 		#disconnect signals for gateway
 	network.disconnect("connection_failed" ,self ,"_OnConnectionFailed")
 	network.disconnect("connection_succeeded" ,self ,"_OnConnectionSucceeded")
-
+	network.close_connection()
+	CONNECTED = false
 
 	

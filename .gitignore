@@ -1,3 +1,6 @@
 #certificates
 Game/Gateway_Server_v0/Certificate/**
 Game/Client_v0/Resources/Certificate/**
+#import folders
+single_player/.import/**
+Game/**/.import/**

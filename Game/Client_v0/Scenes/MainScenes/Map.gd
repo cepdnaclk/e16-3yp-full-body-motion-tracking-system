@@ -7,6 +7,7 @@ var last_world_state = 0
 var world_state_buffer =[]
 const interpolation_offset = 100
 
+onready var parent_scene = null
 
 func SpawnNewPlayer(player_id ,spawn_position):
 	if get_tree().get_network_unique_id() == player_id:
@@ -69,8 +70,7 @@ func _physics_process(delta):
 					var new_position = world_state_buffer[1][player]["P"].origin +( position_delta * extrapolation_factor)
 					get_node("Room/OtherPlayers/" + str(player)).MovePlayer(new_position)
 					
-					
-		
+
 
 func SpawnPlayer():
 	var player = player_scene.instance()

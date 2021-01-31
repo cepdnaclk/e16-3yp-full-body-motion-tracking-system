@@ -16,10 +16,10 @@ func start (player_id):
 func Verify(player_id ,token):
 	#verify player
 	var token_verification = false
-	while OS.get_unix_time() - int(token.right(64)) <= 30:
+	while OS.get_unix_time() - int(token.right(64)) <= main_interface.TOKEN_VALID_TIME:
 		if main_interface.expected_tokens.has(token):
 			token_verification = true
-			createPlayerContainer(player_id)
+			createPlayerContainer(player_id ,token)
 			awaiting_verification.erase(player_id)
 			main_interface.expected_tokens.erase(token)
 			break
@@ -40,7 +40,7 @@ func _on_VerificationExpiration_timeout():
 	else:
 		for key in awaiting_verification.keys():
 			start_time = awaiting_verification[key].Timestamp
-			if current_time - start_time >= 30:
+			if current_time - start_time >= main_interface.TOKEN_VALID_TIME:
 				awaiting_verification.erase(key)
 				var connected_peers = Array(get_tree().get_network_connected_peers())
 				if connected_peers.has(key):
@@ -51,11 +51,13 @@ func _on_VerificationExpiration_timeout():
 
 
 
-func createPlayerContainer(player_id):
+func createPlayerContainer(player_id ,token):
 	#make player container instance
 	var new_player_container = player_container_scene.instance()
 	#change container name to player id
 	new_player_container.name = str(player_id)
+	#add player token to container
+	new_player_container.player_token = token
 	#add player container
 	get_parent().add_child(new_player_container ,true)
 	var player_container = get_node("../"+str(player_id))
