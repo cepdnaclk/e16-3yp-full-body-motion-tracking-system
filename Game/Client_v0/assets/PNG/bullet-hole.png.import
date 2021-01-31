@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/texture_03.png-1e291a62e1968c525cf9d807fbdbf1e9.s3tc.stex"
-path.etc2="res://.import/texture_03.png-1e291a62e1968c525cf9d807fbdbf1e9.etc2.stex"
+path.s3tc="res://.import/bullet-hole.png-f4851c6f580c9c3ad897432e032119c5.s3tc.stex"
+path.etc2="res://.import/bullet-hole.png-f4851c6f580c9c3ad897432e032119c5.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/Dark/texture_03.png"
-dest_files=[ "res://.import/texture_03.png-1e291a62e1968c525cf9d807fbdbf1e9.s3tc.stex", "res://.import/texture_03.png-1e291a62e1968c525cf9d807fbdbf1e9.etc2.stex" ]
+source_file="res://assets/PNG/bullet-hole.png"
+dest_files=[ "res://.import/bullet-hole.png-f4851c6f580c9c3ad897432e032119c5.s3tc.stex", "res://.import/bullet-hole.png-f4851c6f580c9c3ad897432e032119c5.etc2.stex" ]
 
 [params]
 

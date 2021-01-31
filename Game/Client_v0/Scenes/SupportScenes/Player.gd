@@ -1,28 +1,24 @@
 extends KinematicBody
 
+onready var head := $Head
+onready var hand := $Head/Hand
+onready var handloc := $Head/HandLoc
+onready var aimcast := $Head/Camera/AimCast
+onready var weapon := $Head/Hand/Weapon/AnimationPlayer
+onready var b_cal := preload("res://Scenes/TestScenes/BulletDecals.tscn")
 
-#stats
-var curHP :int = 10
-var maxHP: int = 100
-var ammos:int = 50
-var score:int = 0
+const SWAY = 30
 
-#physics
-var MOVESPEED:float = 5.0
-var JUMPFORCE:float = 5.0
-var GRAVITY:float = 12.0
+export var SPEED = 7
+export var ACCELERATION = 20
+export var GRAVITY = 9.8
+export var JUMP = 5
 
-#cam look
-const MINLOOKANGLE: float = -90.0
-const MAXLOOKANGEL: float = 90.0
-var lookSensitivity: float = 10.0
+var MOUSE_SENSIVITY = 0.05
 
-#vectors
-var vel:Vector3 = Vector3()
-var mouseDelta:Vector2 = Vector2()
-
-#components
-onready var camera:Camera = get_node("Camera")
+var direction := Vector3()
+var velocity := Vector3()
+var fall := Vector3()
 
 #player state
 var player_state
@@ -32,75 +28,76 @@ func _ready():
 	set_physics_process(false)
 	#lock and hide cursor
 	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	hand.set_as_toplevel(true)
+	 
 
-func _physics_process(delta):
-	#called 60 ps
-	#reset x and z velocity
-	vel.x = 0
-	vel.z = 0
+func _input(event):
 	
-	#movement vector
-	var input_movement_vec = Vector2()
-	
-	#movement input
-	if Input.is_action_pressed("movement_forward"):
-		input_movement_vec.y -= 1
-	if Input.is_action_pressed("movement_backword"):
-		input_movement_vec.y += 1
-	if Input.is_action_pressed("movement_left"):
-		input_movement_vec.x -= 1
-	if Input.is_action_pressed("movement_right"):
-		input_movement_vec.x += 1
+	if (event is InputEventMouseMotion ) and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+		rotate_y(deg2rad(-event.relative.x*MOUSE_SENSIVITY))
+		head.rotate_x(deg2rad(-event.relative.y*MOUSE_SENSIVITY))
+		head.rotation.x = clamp(head.rotation.x ,deg2rad(-90),deg2rad(90))
 		
-	#normalized input movements
-	input_movement_vec = input_movement_vec.normalized()
+func _process(delta):
 	
-	#get forward and right directions
-	var forward = global_transform.basis.z
-	var right = global_transform.basis.x
+	hand.global_transform.origin = handloc.global_transform.origin
+	hand.rotation.y = lerp_angle(hand.rotation.y ,rotation.y ,SWAY *delta)
+	hand.rotation.x = lerp_angle(hand.rotation.x ,head.rotation.x ,SWAY *delta)
 	
-	var relDir = ( forward * input_movement_vec.y + right * input_movement_vec.x)
-	
-	#set velocity vector
-	vel.x = relDir.x * MOVESPEED
-	vel.z = relDir.z * MOVESPEED
-	
-	# apply gravity
-	vel.y -= GRAVITY * delta
-	
-	#move palyer
-	vel = move_and_slide(vel ,Vector3.UP)
-	
-	#jumping
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		vel.y = JUMPFORCE
-	
-	#free cursor
+func _physics_process(delta):
 	if Input.is_action_just_pressed("ui_cancel"):
 		if Input.get_mouse_mode() == Input.MOUSE_MODE_VISIBLE:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		else:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-			
+	
+	
+		
+	fire()
+	direction = Vector3()
+		
+	if not is_on_floor():
+		fall.y -= GRAVITY * delta
+		
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		fall.y = JUMP
+	
+	if Input.is_action_pressed("movement_forward"):
+		direction -= transform.basis.z
+	elif  Input.is_action_pressed("movement_backword"):
+		direction += transform.basis.z
+	if Input.is_action_pressed("movement_left"):
+		direction -= transform.basis.x
+	elif Input.is_action_pressed("movement_right"):
+		direction += transform.basis.x
+	
+	direction = direction.normalized()
+	
+	velocity = velocity.linear_interpolate(direction * SPEED ,ACCELERATION *delta)
+	velocity = move_and_slide(velocity ,Vector3.UP)
+	move_and_slide(fall ,Vector3.UP)
+	
 	DefinePlayerState()
-
-func _process(delta):
-	# rotate camera along x axis
-	camera.rotation_degrees.x -= mouseDelta.y * lookSensitivity * delta
 	
-	#clamp camera rotation along x
-	camera.rotation_degrees.x = clamp(camera.rotation_degrees.x ,MINLOOKANGLE ,MAXLOOKANGEL)
 	
-	#rotate the player y axis 
-	rotation_degrees.y -= mouseDelta.x * lookSensitivity * delta
-	mouseDelta = Vector2()
+func fire():
+	if Input.is_action_pressed("fire"):
+		weapon.play("fire")
 	
-func _input(event):
-	#call for every input
-	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-		mouseDelta = event.relative
+		if aimcast.is_colliding():
+			var target = aimcast.get_collider()
+			if target.is_in_group("Walls"):
+				var b = b_cal.instance()
+				target.add_child(b)
+				b.global_transform.origin = aimcast.get_collision_point()
+				b.look_at(aimcast.get_collision_point() + aimcast.get_collision_normal(), Vector3.UP)
+	else:
+		weapon.stop()
+		
 		
 func DefinePlayerState():
 	#make player state
 	player_state = {"T":Server.client_clock ,"P":get_global_transform()}
 	Server.SendPlayerState(player_state)
+	
+

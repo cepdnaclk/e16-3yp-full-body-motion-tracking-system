@@ -1,8 +1,9 @@
 #create a Node named server
 extends Node
 
+const TOKEN_VALID_TIME = 50
 var network = NetworkedMultiplayerENet.new()
-var max_players = 100
+var max_players = 100 
 
 onready var player_verification_process = get_node("PlayerVerification")
 onready var combat_function = get_node("Combat")
@@ -10,6 +11,7 @@ onready var combat_function = get_node("Combat")
 var expected_tokens = []
 #collect all player states
 var player_state_collection ={}
+
 
 func _ready():
 	StartServer()
@@ -47,8 +49,8 @@ func _on_TokenExpiration_timeout():
 	else:
 		for i in range(expected_tokens.size() -1 ,-1,-1):
 			token_time = int(expected_tokens[i].right(64))
-			#remove token generated time is more than 30s
-			if current_time - token_time >= 30:
+			#remove token generated time is more than TOKEN_VALID_TIME
+			if current_time - token_time >= TOKEN_VALID_TIME:
 				expected_tokens.remove(i)
 	print("Expected Token:")
 	print(expected_tokens)

@@ -2,9 +2,8 @@
 extends Node
 
 var network = NetworkedMultiplayerENet.new()
-#"192.168.56.101"
-var ip = "127.0.0.1"
-var port = 1909
+var ip = Settings.get_section("server")["ip"]
+var port = Settings.get_section("server")["port"]
 var CONNECTED = false
 
 #------------clock variables--------------------
@@ -16,9 +15,16 @@ var client_clock = 0
 # -------------------------------------------
 var token
 
+var scene_handler = null
+
 func _ready():
 	#ConnectToServer()
 	pass
+
+func _load_settings():
+	print("server setting chnaged")
+	ip = Settings.get_section("server")["ip"]
+	port = Settings.get_section("server")["port"]
 	
 func _physics_process(delta): 
 	#delat in msecs convert to secs
@@ -31,18 +37,43 @@ func _physics_process(delta):
 		decimal_collector -= 1.00
 
 func ConnectToServer():
+	if not scene_handler:
+		#set up scene handler
+		scene_handler = get_node("../SceneHandler")
+	ip = Settings.get_section("server")["ip"]
+	port = Settings.get_section("server")["port"]
+	
 	network.create_client(ip ,port)
 	get_tree().set_network_peer(network)
 	
 	#connect signals 
-	network.connect("connection_failed" ,self ,"_OnConnectionFailed")
-	network.connect("connection_succeeded" ,self ,"_OnConnectionSucceeded")
+	connect_signals()
 
+func ReConnectToServer():
+	var attempts = 0
+	while not CONNECTED:
+		if attempts > 2:
+			scene_handler.dismiss_info()
+			scene_handler.set_alert("Connection failed!")
+			break
+		ConnectToServer()
+		print("trying to connect")
+		yield(get_tree().create_timer(2),"timeout")
+		attempts += 1
+		
+	
 func _OnConnectionFailed():
-	print("Failed to connect")
+	scene_handler.dismiss_info()
+	scene_handler.set_alert("Failed to connect to the server.\nPlease ,try again.")
+	get_node("../SceneHandler/LoginScreen").enable_buttons()
+	disconnect_signals()
+	network.close_connection()
+	CONNECTED = false
 	
 
 func _OnConnectionSucceeded():
+	
+	scene_handler.dismiss_info()
 	print("Succesfully connected")
 	CONNECTED = true
 	# start clock sync
@@ -54,12 +85,36 @@ func _OnConnectionSucceeded():
 	timer.connect("timeout" ,self ,"DetermineLatency")
 	self.add_child(timer)
 	
+func _OnServerDisconnected():
+	
+	CONNECTED = false
+	scene_handler.map.set_physics_process(false)
+	scene_handler._pause_game()
+	scene_handler.set_info("Server disconnected!\nRetry connecting...")
+	disconnect_signals()
+	ReConnectToServer()
+	
+
+
+func connect_signals():
+	#connect signal to network
+	network.connect("connection_failed" ,self ,"_OnConnectionFailed")
+	network.connect("connection_succeeded" ,self ,"_OnConnectionSucceeded")
+	network.connect("server_disconnected", self ,"_OnServerDisconnected")
+
+func disconnect_signals():
+	#disconnect signals from network
+	network.disconnect("connection_failed" ,self ,"_OnConnectionFailed")
+	network.disconnect("connection_succeeded" ,self ,"_OnConnectionSucceeded")
+	network.disconnect("server_disconnected", self ,"_OnServerDisconnected")
+
 remote func ReturnServerTime(server_time ,client_time):
 	latency = (OS.get_system_time_msecs() - client_time ) /2
 	client_clock = server_time + latency 
 	
-func DetermineLatency(client_time):
-	rpc_id(1 ,"DetermineLatency" , OS.get_system_time_msecs())
+func DetermineLatency():
+	if CONNECTED:
+		rpc_id(1 ,"DetermineLatency" , OS.get_system_time_msecs())
 	
 remote func ReturnLatency(client_time):
 	latency_array.append(( OS.get_system_time_msecs() -client_time ) /2)
@@ -90,23 +145,25 @@ remote func FetchToken():
 
 remote func ReturnTokenVerificationResults(result):
 	if result == true :
-		get_node("../SceneHandler/Map/GUI/LoginScreen").queue_free()
 		print("Successful token verfication")
+		scene_handler._play_game()
 	else:
-		print("Login failed , please try again")
-		get_node("../SceneHandler/Map/GUI/LoginScreen").login_button.disabled = false
-		get_node("../SceneHandler/Map/GUI/LoginScreen").create_account_button.disabled = false
+		scene_handler.dismiss_info()
+		scene_handler.set_alert("Login failed , please try again")
+		get_node("../SceneHandler/LoginScreen").enable_buttons()
 #-------------------------------------
 func FetchSkillDamage(skill_name ,requester):
-	#call the server
-	rpc_id(1 , "FetchSkillDamage" ,skill_name ,requester)
+	if CONNECTED:
+		#call the server
+		rpc_id(1 , "FetchSkillDamage" ,skill_name ,requester)
 
 remote func ReturnSkillDamage(s_damage, requester):
 	#assign data to node
 	instance_from_id(requester).SetDamage(s_damage)
 	
 func FetchPlayerStats():
-	rpc_id(1,"FetchPlayerStats")
+	if CONNECTED:
+		rpc_id(1,"FetchPlayerStats")
 
 remote func ReturnPlayerStats(stats):
 	get_node("/root/SceneHandler/Map/GUI/PlayerStats").LoadPlayerStats(stats)
