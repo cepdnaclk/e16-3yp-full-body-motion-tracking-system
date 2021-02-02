@@ -27,6 +27,10 @@ Server="*res://Singletons/Server.gd"
 GameData="*res://Singletons/GameData.gd"
 Gateway="*res://Singletons/Gateway.gd"
 
+[editor_plugins]
+
+enabled=PoolStringArray( "gut" )
+
 [input]
 
 ui_stats={
