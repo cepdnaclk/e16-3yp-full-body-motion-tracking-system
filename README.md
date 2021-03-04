@@ -23,10 +23,9 @@ the graphics and play the sound of the game.
 
 ![Capture](https://user-images.githubusercontent.com/67902627/110010076-e8fb5b80-7d43-11eb-82a8-e9e7614c241b.PNG)
 
-
 ## Network architecture
 
-![Capture2](https://user-images.githubusercontent.com/67902627/110009456-0c71d680-7d43-11eb-8b7c-6763d2f57949.PNG)
+![Capture2](https://user-images.githubusercontent.com/67902627/110010232-134d1900-7d44-11eb-9b6c-a7716c52786d.PNG)
 
 ## Group Members
  - Karunarthna D.A.D.T , E/16/173 , e16173@eng.pdn.ac.lk
