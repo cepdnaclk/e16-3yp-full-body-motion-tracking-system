@@ -3,7 +3,7 @@
 In this project we are developing a multiplayer first-person shooter game based on body motion of the players.
 ### [Click here](https://cepdnaclk.github.io/e16-3yp-full-body-motion-tracking-system/) to visit our website.
 
-![pic](https://user-images.githubusercontent.com/67902627/109948814-b0865e00-7d00-11eb-9e85-7fabcf6c1901.jpg)
+![pic](https://user-images.githubusercontent.com/67902627/110009969-c23d2500-7d43-11eb-976d-5c219a31bd9f.jpg)
 
 ## Problems
 
