@@ -8,7 +8,7 @@ In this project we are developing a multiplayer first-person shooter game based 
 ## Problems
 
 In today's world, you will probably not go a day without hearing someone point out that they feel stressed. And
-also due to the busy life, most of the people do not pay attention to do the physical health. Thefore, this 
+also due to the busy life, most of the people do not pay attention to their physical health. Thefore, this 
 inactive lifestyle, with too much sitting has created many helath risks to people's lives. And also in urban
 places, there are not enough spaces for exercising as well.
 
