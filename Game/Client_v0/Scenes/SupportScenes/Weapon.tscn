@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/Models/pistol.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://Scenes/SupportScenes/Weapon.gd" type="Script" id=2]
+
+[sub_resource type="Animation" id=1]
+resource_name = "fire"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.0682134, -0.0308484, -0.219369 ), Vector3( 0.068, -0.031, -0.205 ), Vector3( 0.068, -0.031, -0.219 ) ]
+}
+
+[node name="Weapon" type="MeshInstance"]
+transform = Transform( -10, 0, -3.25841e-06, 0, 10, 0, 3.25841e-06, 0, -10, 0.0682134, -0.0308484, -0.219369 )
+mesh = ExtResource( 1 )
+material/0 = null
+material/1 = null
+material/2 = null
+material/3 = null
+material/4 = null
+material/5 = null
+material/6 = null
+material/7 = null
+material/8 = null
+material/9 = null
+material/10 = null
+material/11 = null
+material/12 = null
+material/13 = null
+script = ExtResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/fire = SubResource( 1 )
+
+[node name="ReloadTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="CooldownTimer" type="Timer" parent="."]
+one_shot = true
