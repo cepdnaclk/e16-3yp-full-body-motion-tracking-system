@@ -6,6 +6,7 @@ var network = NetworkedMultiplayerENet.new()
 var max_players = 100 
 
 onready var player_verification_process = get_node("PlayerVerification")
+onready var server_room = get_node("ServerRoom")
 onready var combat_function = get_node("Combat")
 #store expecting token from client
 var expected_tokens = []
@@ -68,7 +69,8 @@ func ReturnTokenVerificationResults(player_id ,result):
 	#send verification result ot client
 	rpc_id(player_id ,"ReturnTokenVerificationResults" ,result)
 	if result==true:
-		rpc_id(0,"SpawnNewPlayer" ,player_id ,Transform())
+		var new_pos = server_room.SpawnPlayers()
+		rpc_id(0,"SpawnNewPlayer" ,player_id ,new_pos)
 
 remote func FetchSkillDamage(skill_name, requester):
 	print("ask for damage data")
@@ -109,7 +111,21 @@ remote func DetermineLatency(client_time):
 	var player_id = get_tree().get_rpc_sender_id()
 	rpc_id(player_id, "ReturnLatency" ,client_time)
 	
+
+remote func Attack(attacker_pos,hit_enemies,attack_time):
+	print("Attack received")
+	var player_id = get_tree().get_rpc_sender_id()
+	rpc_id(0,"ReceiveAttack",attacker_pos,hit_enemies,attack_time,player_id)
 	
 	
+remote func Dead():
+	#change player position
+	var player_id = get_tree().get_rpc_sender_id()
+	print(str(player_id), " dead")
+	if has_node(str(player_id)):
+		#get new position
+		var new_pos = server_room.SpawnPlayers()
+		#respawn player
+		rpc_id(0,"ReSpawnPlayer" ,player_id ,new_pos)
 	
 	

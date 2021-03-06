@@ -1,11 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://Scenes/SupportScenes/Player.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/TestScenes/TestRoom.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/SupportScenes/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Resources/Textures/floor.tres" type="Material" id=3]
 [ext_resource path="res://assets/Dark/texture_03.png" type="Texture" id=4]
-
-
+[ext_resource path="res://Scenes/SupportScenes/PlayerTemplate.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/SupportScenes/Room.tscn" type="PackedScene" id=6]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.0627451, 0.827451, 0.290196, 1 )
@@ -22,6 +22,7 @@ size = Vector3( 2, 10, 20 )
 extents = Vector3( 1, 5, 10 )
 
 [node name="TestRoom" type="Spatial"]
+script = ExtResource( 1 )
 
 [node name="CSGCombiner" type="CSGCombiner" parent="."]
 use_collision = true
@@ -82,6 +83,7 @@ material = SubResource( 2 )
 transform = Transform( 0.0305035, 0, -0.999535, 0, 1, 0, 0.999535, 0, 0.0305035, 0, 4.58745, -19.0123 )
 
 [node name="MeshInstance" type="MeshInstance" parent="CSGCombiner/Wall3"]
+transform = Transform( 1, 0, 3.72529e-09, 0, 1, 0, -3.72529e-09, 0, 1, 0, 0, 0 )
 mesh = SubResource( 3 )
 material/0 = null
 
@@ -93,9 +95,11 @@ transform = Transform( 1, 0, 0, 0, 0.892145, 0.45175, 0, -0.45175, 0.892145, 0, 
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.15662, 0 )
-script = ExtResource( 1 )
 
-[node name="Camera" parent="Player/Head" index="1"]
-current = true
+[node name="PlayerTemplate" parent="." instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.99059, -5.80391 )
+
+[node name="Room" parent="." instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4034, 0 )
 
 [editable path="Player"]

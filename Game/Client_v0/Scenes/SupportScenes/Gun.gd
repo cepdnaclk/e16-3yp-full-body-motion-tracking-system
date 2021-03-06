@@ -1,6 +1,4 @@
-#template code of retieving data from server
-extends Node2D
-
+extends Node
 
 export var damage = 10
 var get_damage = false
@@ -17,4 +15,3 @@ func _process(delta):
 	
 func SetDamage(s_damage):
 	print(s_damage)
-

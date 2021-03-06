@@ -156,7 +156,21 @@ func FetchSkillDamage(skill_name ,requester):
 	if CONNECTED:
 		#call the server
 		rpc_id(1 , "FetchSkillDamage" ,skill_name ,requester)
-
+func SendAttack(attack_position,firearm):
+	#send player attack to server
+	rpc_id(1,"Attack",attack_position,firearm,client_clock)
+	
+	
+remote func ReceiveAttack(attacker_pos,hit_enemy,attack_time,attacker):
+	if attacker==get_tree().get_network_unique_id():
+		#player made the shoot
+		pass
+	else:
+		get_node("/root/SceneHandler/Map/Room/OtherPlayers/"+str(attacker)).attack_dict[attack_time]={"position":attacker_pos,"hit_enemy":hit_enemy}
+		
+func SendDied():
+	rpc_id(1,"Dead")
+	
 remote func ReturnSkillDamage(s_damage, requester):
 	#assign data to node
 	instance_from_id(requester).SetDamage(s_damage)
@@ -177,6 +191,9 @@ remote func DespawnPlayer(player_id):
 	#remove player
 	get_node("../SceneHandler/Map").DespawnPlayer(player_id )
 	
+remote func ReSpawnPlayer(player_id,spawn_position):
+	get_node("../SceneHandler/Map").ReSpawnPlayer(player_id ,spawn_position)
+	
 func SendPlayerState(player_state):
 	#send player state to server
 	if CONNECTED:
@@ -185,3 +202,5 @@ func SendPlayerState(player_state):
 	
 remote func ReceiveWorldState(world_state):
 	get_node("../SceneHandler/Map").UpdateWorldState(world_state)
+	
+
