@@ -1,7 +1,4 @@
-/*
-    Arduino and ADXL345 Accelerometer - 3D Visualization Example 
-     by Dejan, https://howtomechatronics.com
-*/
+
 #include <Wire.h>  // Wire library - used for I2C communication
 
 #include <SoftwareSerial.h>
