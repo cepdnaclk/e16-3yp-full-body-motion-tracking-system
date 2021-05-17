@@ -1,7 +1,4 @@
-/*
-    Arduino and ADXL345 Accelerometer - 3D Visualization Example 
-     by Dejan, https://howtomechatronics.com
-*/
+
 import processing.serial.*;
 import java.awt.AWTException;
 import java.awt.Robot;
