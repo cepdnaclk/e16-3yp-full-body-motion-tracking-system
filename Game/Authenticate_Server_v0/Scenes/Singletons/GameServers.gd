@@ -10,14 +10,25 @@ var auth_port = 1911
 var max_players = 100
 
 var gameserverlist = {}
+
 func _ready():
+	var arguments = {}
+	
 	for argument in OS.get_cmdline_args():
-		var args = argument.split(":")
-		if "--port1" in args:
-			port = int(args[1])
+		
+		# Parse valid command-line arguments into a dictionary
+		if argument.find("=") > -1:
 			
-		if "--port2" in args:
-			auth_port = int(args[1])
+			var key_value = argument.split("=")
+			var arg_key = key_value[0].lstrip("--")
+			if "gamePort"==arg_key and key_value[1] != "":
+				port = int(key_value[1])
+			
+			elif "authPort"==arg_key and key_value[1] != "":
+				auth_port = int(key_value[1])
+			else:
+				print("Use --gamePort=<port:int> to GameServer port /nUse --authPort=<port:int> to GatewayServer port")
+				get_tree().quit(-1)
 			
 	StartServer()
 
