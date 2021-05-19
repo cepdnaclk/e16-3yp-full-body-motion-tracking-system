@@ -12,14 +12,29 @@ onready var gameserver = get_node("/root/Server")
 
 
 func _ready():
+	
+	var arguments = {}
+	
 	for argument in OS.get_cmdline_args():
-		var args = argument.split(":")
-		if "--ip" in args:
-			ip = args[1]
-		if "--port1" in args:
-			port = int(args[1])
-		if "--port2" in args:
-			client_port = int(args[1])
+		
+		# Parse valid command-line arguments into a dictionary
+		if argument.find("=") > -1:
+			
+			var key_value = argument.split("=")
+			var arg_key = key_value[0].lstrip("--")
+			
+			if "authPort"==arg_key and key_value[1] != "":
+				port = int(key_value[1])
+			
+			elif "clientPort"==arg_key and key_value[1] != "":
+				client_port = int(key_value[1])
+				
+			elif "authIP"==arg_key and key_value[1] != "":
+				ip = key_value[1]
+			else:
+				print("Use --clientPort=<port:int> to Client connecting port /nUse --authPort=<port:int> to AuthServer port --ip=<ip:str> for AuthServer IP")
+				get_tree().quit(-1)
+	
 	ConnectToServer()
 
 func _process(delta):
