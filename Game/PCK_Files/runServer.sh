@@ -1,3 +1,3 @@
 #!/bin/bash
 
-godot --main-pack Server.pck --authIP=127.0.0.1 --authPort=1912 --clientPort=1909
+godot --main-pack Server.pck --authIP=$1 --authPort=1912 --clientPort=1909
