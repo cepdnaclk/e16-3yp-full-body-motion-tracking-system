@@ -21,7 +21,8 @@ the graphics and play the sound of the game.
 
 ## Design architecture
 
-![Capture](https://user-images.githubusercontent.com/67902627/110010076-e8fb5b80-7d43-11eb-82a8-e9e7614c241b.PNG)
+![Solution_architecture](https://user-images.githubusercontent.com/67902627/119270040-608ca880-bc18-11eb-8006-bdd2ecc8178b.jpg)
+
 
 ## Network architecture
 
