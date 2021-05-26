@@ -22,7 +22,7 @@ size = Vector3( 2, 10, 20 )
 [sub_resource type="BoxShape" id=4]
 extents = Vector3( 1, 5, 10 )
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 resource_name = "Reload"
 length = 2.65
 tracks/0/type = "transform"
@@ -76,8 +76,7 @@ tracks/4/keys = {
 "values": [ Vector3( 8.94184, 16.5373, 7.15256e-07 ), Vector3( 8.10742, 16.4922, 0 ), Vector3( 8.94184, 16.5373, 7.15256e-07 ) ]
 }
 
-[sub_resource type="Animation" id=5]
-resource_name = "Shoot"
+[sub_resource type="Animation" id=6]
 length = 0.6
 tracks/0/type = "transform"
 tracks/0/path = NodePath("pistol_tauros/Círculo_017")
@@ -181,18 +180,12 @@ material/0 = null
 [node name="CollisionShape" type="CollisionShape" parent="CSGCombiner/Wall3"]
 shape = SubResource( 4 )
 
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.892145, 0.45175, 0, -0.45175, 0.892145, 0, 9.76151, 18.0375 )
-
 [node name="Player" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.15662, 0 )
 
 [node name="AnimationPlayer" parent="Player/Head/Hand/Weapon" index="0"]
-anims/Reload = SubResource( 6 )
-anims/Shoot = SubResource( 5 )
-
-[node name="pistol_tauros" parent="Player/Head/Hand/Weapon" index="4"]
-transform = Transform( -3.25841e-10, 0, -0.002, 0, 0.002, 0, 0.002, 0, -3.25841e-10, 2.79397e-09, -0.0184689, -0.00919497 )
+anims/Reload = SubResource( 5 )
+anims/Shoot = SubResource( 6 )
 
 [node name="Círculo_017" parent="Player/Head/Hand/Weapon/pistol_tauros" index="4"]
 transform = Transform( 0.104586, 8.88178e-15, 2.32831e-09, 2.32831e-09, -4.57159e-09, -0.104586, -1.77636e-15, 0.104586, -4.57159e-09, 8.94184, 16.5373, 7.15256e-07 )

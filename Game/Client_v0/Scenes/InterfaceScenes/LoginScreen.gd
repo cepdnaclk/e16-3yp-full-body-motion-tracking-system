@@ -52,7 +52,7 @@ func _on_LoginButton_pressed():
 	#queue_free()
 	#return true
 	# --------------------------------------------------------
-	
+	parent_scene.play_click_sound()
 	if username_input.text == "" or userpassword_input.text =="":
 		#popup and stop
 		parent_scene.set_alert("Please provide valid user ID and password")
@@ -67,13 +67,14 @@ func _on_LoginButton_pressed():
 
 
 func _on_CreateAccountButton_pressed():
+	parent_scene.play_click_sound()
 	login_screen.hide()
 	create_account_screen.show()
 
 
 func _on_BackButton_pressed():
 	
-
+	parent_scene.play_click_sound()
 	if not last_screen:
 		create_account_screen.hide()
 		login_screen.show()
@@ -83,6 +84,7 @@ func _on_BackButton_pressed():
 
 
 func _on_ConfirmButton_pressed():
+	parent_scene.play_click_sound()
 	if create_username_input.get_text() == "":
 		parent_scene.set_alert("Please provide valide username")
 	elif create_userpassword_input.get_text() == "":
@@ -103,9 +105,11 @@ func _on_ConfirmButton_pressed():
 
 
 func _on_SettingsButton_pressed():
+	parent_scene.play_click_sound()
 	parent_scene._change_scene("settings")
 
 func _on_MainMenuButton_pressed():
+	parent_scene.play_click_sound()
 	parent_scene._change_scene("mainmenu")
 	
 func disable_buttons():

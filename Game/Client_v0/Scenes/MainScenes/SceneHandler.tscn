@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scenes/MainScenes/SceneHandler.gd" type="Script" id=1]
 [ext_resource path="res://Resources/default_theme.theme" type="Theme" id=2]
 [ext_resource path="res://assets/Fonts/kenvector_future_thin.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Resources/Audio/alexander-nakarada-the-great-battle.ogg" type="AudioStream" id=4]
 [ext_resource path="res://Scenes/MainScenes/Map.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Resources/Audio/mixkit-sci-fi-click-900.ogg" type="AudioStream" id=6]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 1 )
@@ -94,6 +96,17 @@ valign = 1
 autowrap = true
 
 [node name="Map" parent="." instance=ExtResource( 5 )]
+
+[node name="BackgroundSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="TimerClick" type="Timer" parent="ClickSound"]
+wait_time = 0.69
+one_shot = true
 [connection signal="pressed" from="PopBox/Button" to="." method="_on_Button_pressed"]
+[connection signal="timeout" from="ClickSound/TimerClick" to="." method="_on_TimerClick_timeout"]
 
 [editable path="Map"]
