@@ -5,6 +5,8 @@ const MAGAZINE = 6
 var bullets = MAGAZINE
 var get_damage = false
 
+var _is_reloading = false
+
 onready var cooldown_timer = $CooldownTimer
 
 func _ready():
@@ -22,14 +24,33 @@ func SetDamage(s_damage):
 	
 func shoot():
 	if bullets> 0:
-		$AnimationPlayer.play("fire")
+		play_sound("Shoot")
+		$AnimationPlayer.play("Shoot")
 		bullets-=1
 		return true
 	else:
 		return false
 		
 func Reload():
-	print("reloading...")
-	$ReloadTimer.start()
+	if not _is_reloading:
+		_is_reloading = true
+		play_sound("Reload")
+		$ReloadTimer.start()
+		$AnimationPlayer.play("Reload")
 
 
+func play_sound(sound):
+	if $Sounds.has_node(sound):
+		$Sounds.get_node(sound).play()
+
+func stop_sound(sound):
+	if $Sounds.has_node(sound):
+		$Sounds.get_node(sound).stop()
+
+func _on_CooldownTimer_timeout():
+	stop_sound("Shoot")
+
+
+func _on_ReloadTimer_timeout():
+	stop_sound("Reload")
+	_is_reloading = false
