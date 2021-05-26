@@ -43,10 +43,12 @@ func exit(host):
 
 
 func _on_Back_pressed():
+	parent_scene.play_click_sound()
 	parent_scene._back()
 
 
 func _on_Save_pressed():
+	parent_scene.play_click_sound()
 	var server_ip = server_ip_text.get_text()
 	var server_port = server_port_text.get_text()
 	var gateway_ip = gateway_ip_text.get_text()
@@ -64,5 +66,3 @@ func _on_Save_pressed():
 		
 		
 		
-			
-			

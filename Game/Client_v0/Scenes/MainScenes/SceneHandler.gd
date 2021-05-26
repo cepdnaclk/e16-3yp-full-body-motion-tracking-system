@@ -25,6 +25,8 @@ func _ready():
 	#current_scene = scene_map["mainmenu"]
 	_change_scene("mainmenu")
 	#initiate game here
+	#start pplaying background sound
+	play_background_sound()
 	#var mapstart_instance = mapstart.instance()
 	#add_child(mapstart_instance)
 	#mapstart_instance.get_node("GUI/PlayerStats").hide()
@@ -112,3 +114,12 @@ func _quit():
 	get_tree().quit()
 		
 	
+func play_background_sound():
+	get_node("BackgroundSound").play()
+	
+func play_click_sound():
+	get_node("ClickSound").play()
+	get_node("ClickSound/TimerClick").start()
+
+func _on_TimerClick_timeout():
+	get_node("ClickSound").stop()

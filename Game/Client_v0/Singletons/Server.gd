@@ -133,8 +133,8 @@ remote func ReturnLatency(client_time):
 		
 		delta_latency = (total_latency / latency_array.size()) - latency 
 		latency = total_latency / latency_array.size()
-		print("New latency ",latency)
-		print("Delta latency" ,delta_latency)
+		#print("New latency ",latency)
+		#print("Delta latency" ,delta_latency)
 		latency_array.clear()
 		
 				

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scenes/SupportScenes/Player.gd" type="Script" id=1]
 [ext_resource path="res://assets/PNG/crosshair010.png" type="Texture" id=2]
@@ -23,6 +23,12 @@ height = 0.283833
 
 [sub_resource type="CubeMesh" id=5]
 size = Vector3( 0.1, 0.2, 0.5 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.101961, 1, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0.972549, 0.909804, 0.172549, 1 )
 
 [node name="Player" type="KinematicBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.747643, 0 )
@@ -101,6 +107,15 @@ margin_top = 31.0
 margin_right = 100.0
 margin_bottom = 58.0
 text = "HP"
+
+[node name="HPBar" type="ProgressBar" parent="Head/Camera/PlayerInfo"]
+margin_top = 62.0
+margin_right = 100.0
+margin_bottom = 89.0
+custom_styles/fg = SubResource( 6 )
+custom_styles/bg = SubResource( 7 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+rounded = true
 
 [node name="HandLoc" type="Spatial" parent="Head"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.178575, -0.35012, -0.434543 )

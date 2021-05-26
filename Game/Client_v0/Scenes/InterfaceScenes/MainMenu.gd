@@ -28,13 +28,16 @@ func _on_SPButton_pressed():
 
 
 func _on_MPButton_pressed():
+	parent_scene.play_click_sound()
 	parent_scene._change_scene("loginmenu")
 	
 
 
 func _on_SettingButton_pressed():
+	parent_scene.play_click_sound()
 	parent_scene._change_scene("settings")
 
 
 func _on_QuitButton_pressed():
+	parent_scene.play_click_sound()
 	parent_scene._quit()

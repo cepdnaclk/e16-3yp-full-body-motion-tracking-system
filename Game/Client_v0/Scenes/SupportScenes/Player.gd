@@ -36,7 +36,8 @@ func _ready():
 	#lock and hide cursor
 	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	hand.set_as_toplevel(true)
-	player_info.get_node("HP").set_text("HP: %s"%(str(Health)))
+	#player_info.get_node("HP").set_text("HP: %s"%(str(Health)))
+	player_info.get_node("HPBar").value = Health
 	 
 
 func _input(event):
@@ -111,7 +112,7 @@ func fire():
 				hit_targets = target.name
 		if weapon.shoot():
 			if hit_targets != "":
-				print("hit target ",hit_targets)
+				#print("hit target ",hit_targets)
 				#send attack if player hit enemy
 				Server.SendAttack(global_transform,hit_targets)
 			player_info.get_node("Ammo").set_text("Ammo:%s"%(str(weapon.bullets)))
@@ -132,10 +133,11 @@ func DefinePlayerState():
 func Damage():
 	
 	Health -=20
-	print(Health)
-	player_info.get_node("HP").set_text("HP: %s"%(str(Health)))
+	#print(Health)
+	#player_info.get_node("HP").set_text("HP: %s"%(str(Health)))
+	player_info.get_node("HPBar").value = Health
 	if Health <= 0:
-		print("died")
+		#print("died")
 		Server.SendDied()
 		get_node("../../../").set_info("Dead!!")
 		yield(get_tree().create_timer(5),"timeout")
@@ -149,5 +151,6 @@ func UpdateData():
 	Health=100
 	weapon.bullets = weapon.MAGAZINE
 	player_info.get_node("Ammo").set_text("Ammo:%s"%(str(weapon.bullets)))
-	player_info.get_node("HP").set_text("HP: %s"%(str(Health)))
+	#player_info.get_node("HP").set_text("HP: %s"%(str(Health)))
+	player_info.get_node("HPBar").value = Health
 

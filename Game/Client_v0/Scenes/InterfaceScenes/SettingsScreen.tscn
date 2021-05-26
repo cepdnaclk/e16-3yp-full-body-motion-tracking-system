@@ -82,9 +82,8 @@ custom_constants/separation = 5
 alignment = 1
 
 [node name="Label" type="Label" parent="BackOverlay/VBoxContainer/TabContainer/Server/VBoxContainer/Ip"]
-margin_top = -1.0
 margin_right = 173.0
-margin_bottom = 49.0
+margin_bottom = 50.0
 rect_min_size = Vector2( 173, 50 )
 text = "Server IP"
 valign = 1
@@ -104,9 +103,8 @@ rect_min_size = Vector2( 0, 50 )
 alignment = 1
 
 [node name="Label" type="Label" parent="BackOverlay/VBoxContainer/TabContainer/Server/VBoxContainer/Port"]
-margin_top = -1.0
 margin_right = 173.0
-margin_bottom = 49.0
+margin_bottom = 50.0
 rect_min_size = Vector2( 173, 50 )
 text = "Server Port"
 valign = 1
@@ -217,8 +215,8 @@ __meta__ = {
 }
 
 [node name="Back" type="Button" parent="BackOverlay/HBoxContainer"]
-margin_left = 424.0
-margin_right = 509.0
+margin_left = 425.0
+margin_right = 510.0
 margin_bottom = 84.0
 rect_min_size = Vector2( 85, 40 )
 size_flags_horizontal = 4
@@ -229,8 +227,8 @@ __meta__ = {
 }
 
 [node name="Save" type="Button" parent="BackOverlay/HBoxContainer"]
-margin_left = 513.0
-margin_right = 598.0
+margin_left = 514.0
+margin_right = 599.0
 margin_bottom = 84.0
 rect_min_size = Vector2( 85, 40 )
 size_flags_horizontal = 4
