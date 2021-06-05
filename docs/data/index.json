@@ -1,0 +1,47 @@
+{
+    "title": "Game Console based on Body Motion tracking System",
+    "team": [
+        {
+            "name": "Karunarthna D A D T",
+            "email": "e16173@eng.pdn.ac.lk",
+            "eNumber": "E/16/173",
+            "github_profile":"https://github.com/dumindudtk97",
+            "linkedin_profile":"#"
+        },
+        {
+            "name": "Wijayasinghe S D D D",
+            "email": "e16394@eng.pdn.ac.lk",
+            "eNumber": "E/16/394",
+            "github_profile":"https://github.com/DamithDilhan",
+            "linkedin_profile":"#"
+        },
+        {
+            "name": "Wijekoon W M T S",
+            "email": "e16396@eng.pdn.ac.lk",
+            "eNumber": "E/16/396",
+            "github_profile":"https://github.com/ThemindaSrimal",
+            "linkedin_profile":"#"
+        }
+    ],
+    "supervisors": [
+        {
+            "name": "Dr. Isuru Navinna",
+            "email": "isurunawinne@eng.pdn.ac.lk",
+            "linkedin_profile":"https://www.linkedin.com/in/isuru-nawinne-73302833/",
+            "researchgate_profile":"https://www.researchgate.net/profile/Isuru-Nawinne"
+        },
+        {
+            "name": "Mr. Ziyan Marikkar",
+            "email": "ziyanm@gmail.com",
+            "linkedin_profile":"https://www.linkedin.com/in/ziyan-maraikar-15539818a",
+            "researchgate_profile":"#"
+        },
+        {
+            "name": "Dr. Upul Jayasinghe",
+            "email": "upuljm@eng.pdn.ac.lk",
+            "linkedin_profile":"https://www.linkedin.com/in/upuljm/",
+            "researchgate_profile":"https://www.researchgate.net/profile/Upul-Jayasinghe"
+        }
+    ],
+    "tags": ["VR", "Embedded Systems"]
+}
